@@ -40,7 +40,21 @@ async function run() {
       
       const result = await bookingsCollection.insertOne(data);
       res.send(result);
-    })  
+    })
+    
+    app.patch("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateInfo = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          status: updateInfo.status
+        }
+      };
+
+      const result = await bookingsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
 
     app.get("/bookings",async (req, res) => {
       const userEmail = req.query.email;
